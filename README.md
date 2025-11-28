@@ -16,6 +16,10 @@ Training Vision-Language-Action (VLA) models for generalist robots typically req
 
 ![GigaBrain-0 Architecture](docs/source/imgs/giga_brain_0_architecture.png)
 
+Leveraging the efficient world-model data engine and innovations in model architecture, GigaBrain-0 has demonstrated rapid performance improvements. The currently released version not only significantly surpass $\pi_0$ but also deliver performance comparable to $\pi_{0.5}$.
+
+![GigaBrain-0 Performance](docs/source/imgs/giga_brain_0_performance.png)
+
 ## 📰 News
 
 - **`[2025/11/27]`** Released GigaBrain-0 model weights. This version of the model excludes depth images and intermediate 2D manipulation trajectories for more user-friendly use. However, the code supports these features — if your dataset contains them and you wish to use them, simply enable the corresponding options in the configuration.
