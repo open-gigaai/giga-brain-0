@@ -11,9 +11,10 @@
 </div>
 
 ## 📰 News
+- **`[2026/08/15]`** GigaBrain-0.7 will be released soon. 👀
 - **`[2026/03/10]`** We will host the [GigaBrain Challenge 2026 @ CVPR 2026](https://gigaai-research.github.io/GigaBrain-Challenge-2026/) with three competition tracks: RoboTwin (simulation), GigaWorld (World Model), and RoboChallenge (real robot). We also have a call for papers on [OpenReview](https://openreview.net/group?id=thecvf.com/CVPR/2026/Workshop/GigaBrain_Challenge) and will select a Best Paper Award.
 - **`[2026/02/13]`** Released [GigaBrain-0.5M* technique report](https://gigabrain05m.github.io/). GigaBrain-0.5M* is a VLA that learns from world model-based reinforcement learning.
-- **`[2026/02/09]`** 🎉 GigaBrain-0.1 achieved 1st place on the RoboChallenge leaderboard.
+- **`[2026/02/09]`** GigaBrain-0.1 achieved 1st place on the RoboChallenge leaderboard. 🎉
 - **`[2026/02/02]`** Released GigaBrain-0.1 model weights, which follow the same usage as GigaBrain-0 but achieve better performance.
 - **`[2025/11/27]`** Released GigaBrain-0 model weights. This version of the model excludes depth images and intermediate 2D manipulation trajectories for more user-friendly use. However, the code supports these features — if your dataset contains them and you wish to use them, simply enable the corresponding options in the configuration.
 - **`[2025/11/27]`** Released the model architecture, as well as the pre-training and post-training implementations.
