@@ -1,19 +1,35 @@
+![GigaBrain-0 Overview](docs/source/imgs/gigabrain07_teaser.png)
+
 <div align="center" style="font-family: charter;">
-    <h1> GigaBrain-0.7: A World Model-Powered Vision-Language-Action Model </h1>
+    <h1> GigaBrain-0.7: Scaling Embodied Foundation Models to Emergent Capabilities with a Three-System Architecture </h1>
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Project](https://img.shields.io/badge/Project-Page-99cc2)](https://gigaai.cc/blog/gigabrain07)
 [![arXiv](https://img.shields.io/badge/arXiv-2608.15875-b31b1b.svg)](https://arxiv.org/abs/2608.15875)
 [![Paper](https://img.shields.io/badge/Paper-Technical_Report-99cc2)](tech_report/GigaBrain-0.7.pdf)
+[![Models](https://img.shields.io/badge/HuggingFace-Models-yellow?logo=huggingface)](https://huggingface.co/open-gigaai/models)
+[![DataSet](https://img.shields.io/badge/HuggingFace-Data-yellow?logo=huggingface)](https://huggingface.co/open-gigaai/datasets)
 
 </div>
 
-> This repository contains the GigaBrain-0.7 training, rollout evaluation, and
-> robot-deployment implementation.
-
 ## 📰 News
+- **`[2026/08/25]`** Released the GigaBrain-0.7 Code, Model and Sample Data.
+- **`[2026/08/17]`** Released the GigaBrain-0.7 technical report.
+- **`[2026/03/10]`** We will host the [GigaBrain Challenge 2026 @ CVPR 2026](https://gigaai-research.github.io/GigaBrain-Challenge-2026/) with three competition tracks: RoboTwin (simulation), GigaWorld (World Model), and RoboChallenge (real robot). We also have a call for papers on [OpenReview](https://openreview.net/group?id=thecvf.com/CVPR/2026/Workshop/GigaBrain_Challenge) and will select a Best Paper Award.
+- **`[2026/02/13]`** Released [GigaBrain-0.5M* technical report](https://gigabrain05m.github.io/). GigaBrain-0.5M* is a VLA that learns from world model-based reinforcement learning.
+- **`[2026/02/09]`** GigaBrain-0.1 achieved 1st place on the RoboChallenge leaderboard. 🎉
+- **`[2026/02/02]`** Released GigaBrain-0.1 model weights, which follow the same usage as GigaBrain-0 but achieve better performance.
+- **`[2025/11/27]`** Released GigaBrain-0 model weights. This version of the model excludes depth images and intermediate 2D manipulation trajectories for more user-friendly use. However, the code supports these features — if your dataset contains them and you wish to use them, simply enable the corresponding options in the configuration.
+- **`[2025/11/27]`** Released the model architecture, as well as the pre-training and post-training implementations.
 
-- **`[2026/08/17]`** Released the [GigaBrain-0.7 technical report](tech_report/GigaBrain-0.7.pdf) and updated the implementation in this repository.
+## TODO
+- [x] Release the GigaBrain-0.7 technical report.
+- [x] Release the GigaBrain-0.7 Code, Model and Sample Data.
+- [ ] Release VLM evaluation code.
+- [ ] Release RoboColiseum benchmark code.
+- [ ] Release RoboTwin2.0 benchmark code.
+- [ ] Release EBench benchmark code.
+
 
 ## ✨ Introduction
 
@@ -37,7 +53,7 @@ platform and mainstream robot embodiments, GigaBrain-0.7 demonstrates strong
 task adaptability and completion ability across both home and industrial
 scenarios.
 
-![GigaBrain-0.7 Three-System Architecture](projects/vla/giga-brain-0/docs/source/imgs/gigabrain07_arch.png)
+![GigaBrain-0.7 Three-System Architecture](docs/source/imgs/gigabrain07_arch.png)
 
 
 ## 💾 Data
@@ -46,7 +62,7 @@ The GigaBrain-0.7 summarizes 37.3k hours of heterogeneous
 embodied pre-training data, including real-robot, UMI, egocentric, simulation,
 and world-model-generated data.
 
-![GigaBrain-0.7 Data Composition](projects/vla/giga-brain-0/docs/source/imgs/data_overview_0816.png)
+![GigaBrain-0.7 Data Composition](docs/source/imgs/data_overview_0816.png)
 
 ## ⚡ Installation
 
@@ -65,7 +81,7 @@ conda activate gigabrain07
 # Run from the GigaBrain-0.7 repository root.
 export GIGA_BRAIN_ROOT="$PWD"
 
-python -m pip install -r projects/vla/giga-brain-0/requirements-paligemma2.txt
+python -m pip install -r requirements-paligemma2.txt
 python -m pip install "giga-datasets==1.1.0"
 python -m pip install "giga-train==1.1.0"
 python -m pip install "git+https://github.com/open-gigaai/giga-models.git@1.1.0" --no-deps
@@ -78,22 +94,22 @@ export PYTHONPATH="$GIGA_BRAIN_ROOT${PYTHONPATH:+:$PYTHONPATH}"
 Run all commands in this section from the repository root after completing
 the installation and environment exports above.
 
-### 1. Download the GigaBrain-0.7 pretrained model and sample data from Hugging Face
-
+### 1. Download
+Download the GigaBrain-0.7 pretrained model and sample data from Hugging Face.
 | Resource | HF Link | Description |
 | :---: | :---: | :--- |
 | GigaBrain-0.7-3.5B-Base | 🤗 [Hugging Face](https://huggingface.co/open-gigaai/GigaBrain-0.7-3.5B-Base) | The pretrained 3.5B base model for GigaBrain-0.7. |
-| GigaBrain-0.7-SampleData | 🤗 [Hugging Face](https://huggingface.co/datasets/open-gigaai/GigaBrain-0.7-SampleData/tree/main) | Sample data for running the GigaBrain-0.7 pre-training workflow. |
+| GigaBrain-0.7-SampleData | 🤗 [Hugging Face](https://huggingface.co/datasets/open-gigaai/GigaBrain-0.7-SampleData) | Sample data for running the GigaBrain-0.7 training workflow. |
 
-### 2. Compute normalization statistics
+### 2. Norm
 
 Training data is expected in LeRobot format. Use
-[compute_norm_stats_fast.py](projects/vla/giga-brain-0/scripts/compute_norm_stats_fast.py)
+[compute_norm_stats_fast.py](scripts/compute_norm_stats_fast.py)
 to read the LeRobot frame Parquet files directly and compute normalization
 statistics for `observation.state` and `action`:
 
 ```bash
-python projects/vla/giga-brain-0/scripts/compute_norm_stats_fast.py \
+python scripts/compute_norm_stats_fast.py \
   --data-paths /path/to/lerobot_dataset1 /path/to/lerobot_dataset2 \
   --output-path /path/to/norm_stats.json \
   --embodiment-id 6 \
@@ -112,12 +128,12 @@ and the complete, space-separated Boolean mask for other robot types. Keep
 are useful only for an I/O smoke test. Point `norm_stats_path` (or the
 corresponding `norm_cfg`) in the training config to the generated file. The
 task-specific configs in
-`projects/vla/giga-brain-0/configs/` show robot-type masks and dataset layouts
+`configs` show robot-type masks and dataset layouts
 for the current GigaBrain-0.7 training stack.
 
 ### 3. Train
 
-Training configs live under `projects/vla/giga-brain-0/configs/`. Adjust
+Training configs live under `configs`. Adjust
 `gpu_ids`, `batch_size_per_gpu`, dataset paths, and normalization paths for
 your environment. The example configs contain internal paths and must be
 edited before use outside that environment. Logs and checkpoints are written
@@ -142,7 +158,7 @@ unchanged when post-training from an existing checkpoint.
 
 The complete default mapping is defined by `EmbodimentId`, `RobotType`, and
 `robot_type_mapping` in
-[`giga_brain_0_transforms.py`](projects/vla/giga-brain-0/giga_brain_0/giga_brain_0_transforms.py).
+[`giga_brain_0_transforms.py`](giga_brain_0/giga_brain_0_transforms.py).
 IDs 6 and 7 are built into this mapping and do not require a config override.
 
 To select an embodiment in a training config, make sure the LeRobot dataset's
@@ -188,12 +204,13 @@ actual data layout. The two provided configs use the built-in mappings for
 AgileX Cobot Magic (ID 6) and H01 (ID 7), respectively.
 
 ```bash
-# Validated GigaBrain-0.7 PaliGemma2 post-training configs.
-python projects/vla/giga-brain-0/scripts/train.py \
-  --config projects/vla/giga-brain-0/configs/gb07_pg2_pick_and_place_piper_30k.py
+# Train GigaBrain-0.7 for AgileX PiPER.
+python scripts/train.py \
+  --config configs/gb07_pg2_pick_and_place_piper_30k.py
 
-python projects/vla/giga-brain-0/scripts/train.py \
-  --config projects/vla/giga-brain-0/configs/gb07_pg2_push_buttons_h01_30k.py
+# Train GigaBrain-0.7 for Maker H01.
+python scripts/train.py \
+  --config configs/gb07_pg2_push_buttons_h01_30k.py
 ```
 
 Both configs have been validated through real data loading, forward, backward,
@@ -203,20 +220,20 @@ push-buttons loss decreased by 31.97%. Normal training changes both the batch
 and flow noise each step, so inspect a moving average or validation loss rather
 than expecting every raw training loss to decrease monotonically.
 
-See [configure_introduction.md](projects/vla/giga-brain-0/docs/configure_introduction.md)
+See [configure_introduction.md](docs/configure_introduction.md)
 for the configuration schema.
 
-### 4. Run rollout evaluation
+### 4. Evaluation
 
 The maintained evaluation entry point is
-`inference_paligemma2_flow_rollout.py`. It rebuilds the training transform,
+`inference_gigabrain07_flow_rollout.py`. It rebuilds the training transform,
 loads the EMA checkpoint by default, and writes per-episode MSE/MAE metrics
 (and optional plots/replays).
 
 ```bash
-python projects/vla/giga-brain-0/scripts/inference/inference_paligemma2_flow_rollout.py \
+python scripts/inference/inference_gigabrain07_flow_rollout.py \
   --checkpoint-path /path/to/checkpoint_epoch_step \
-  --config-path projects/vla/giga-brain-0/configs/gb07_pg2_pick_and_place_piper_30k.py \
+  --config-path configs/gb07_pg2_pick_and_place_piper_30k.py \
   --data-path /path/to/lerobot_dataset \
   --output-path /tmp/gigabrain07_eval \
   --device cuda:0 \
@@ -231,10 +248,10 @@ Use `--no-plot` for a metrics-only run, `--checkpoint-subdir model` to use
 non-EMA weights, or `--use-predicted-action` for a closed-loop state update.
 Run the script with `--help` for the complete set of options.
 
-See the [30k checkpoint evaluation](projects/vla/giga-brain-0/docs/eval_30k_20260818.md)
+See the [30k checkpoint evaluation](docs/eval_30k_20260818.md)
 for the validated three-episode open-loop results.
 
-### 5. Robot deployment
+### 5. Deployment
 
 The unified server loads train-time preprocessing and delta-mask settings from
 `inference_config.json` next to `config.json` in the selected Diffusers
@@ -249,15 +266,15 @@ the normalization statistics generated for the same dataset and robot schema.
 | AgileX Cobot Magic, mobile base | `agilex_cobot_magic` | 6 | 14 | 16 | 8081 |
 | Maker H01 | `h01_robot` | 7 | 22 | 16 | 8011 |
 
-#### AgileX Cobot Magic
+#### AgileX PiPER
 
-Start the GPU inference server from the repository root. Use
+Start the GPU inference **server** from the repository root. Use
 `--host 0.0.0.0` when the robot client runs on another machine; use
 `127.0.0.1` only when both processes run on the same machine.
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python \
-  projects/vla/giga-brain-0/scripts/inference/inference_agilex_server_unified.py \
+  scripts/inference/inference_agilex_server_unified.py \
   --model-path /path/to/checkpoint/model_ema \
   --pretrained-path /path/to/paligemma2-3b-pt-224 \
   --fast-tokenizer-path /path/to/physical-intelligence-fast \
@@ -270,7 +287,7 @@ CUDA_VISIBLE_DEVICES=0 python \
   --port 8081
 ```
 
-On the AgileX ROS host, connect the recommended smooth client to the server's
+On the AgileX ROS host, connect the recommended smooth **client** to the server's
 reachable IP address. The server and client ports must match.
 
 ```bash
@@ -278,7 +295,7 @@ reachable IP address. The server and client ports must match.
 SERVER_IP=192.0.2.10
 
 python \
-  projects/vla/giga-brain-0/scripts/inference/inference_agilex_client_unified_smooth.py \
+  scripts/inference/inference_agilex_client_unified_smooth.py \
   --host "${SERVER_IP}" \
   --port 8081 \
   --task-name "Put the cucumber into the woven basket." \
@@ -301,17 +318,15 @@ For mobile-base deployment, change the server to
 it reads the output width from the server handshake.
 
 The equivalent editable templates are
-[agilex/server.bash](projects/vla/giga-brain-0/scripts/inference/agilex/server.bash)
+[scripts/inference/agilex/server.bash](scripts/inference/agilex/server.bash)
 and
-[agilex/client.bash](projects/vla/giga-brain-0/scripts/inference/agilex/client.bash).
-The client publishes ROS arm and optional base commands, so verify the camera,
-joint-state, command, and base topics against the target robot before enabling
-hardware motion.
+[scripts/inference/agilex/client.bash](scripts/inference/agilex/client.bash).
+The client publishes ROS arm and optional base commands, so verify the camera, joint-state, command, and base topics against the target robot before enabling hardware motion.
 
 #### Maker H01
 
 The H01 release profile uses a 22D observation state and a 16D action. Start
-the shared server launcher with the complete variant configuration:
+the shared **server** launcher with the complete variant configuration:
 
 ```bash
 MODEL_PATH=/path/to/checkpoint/model_ema \
@@ -328,16 +343,14 @@ HOST=0.0.0.0 \
 PORT=8011 \
 CUDA_VISIBLE_DEVICES=0 \
 DTYPE=bf16 \
-bash projects/vla/giga-brain-0/scripts/inference/h01/run_h01_server_common.sh
+bash scripts/inference/h01/run_h01_server_common.sh
 ```
 
 The preset
-[run_h01_server_s22_a16.sh](projects/vla/giga-brain-0/scripts/inference/h01/run_h01_server_s22_a16.sh)
-uses the same schema, but its model, tokenizer, and normalization paths must be
-updated for the deployment machine.
+[run_h01_server_s22_a16.sh](scripts/inference/h01/run_h01_server_s22_a16.sh)
+uses the same schema, but its model, tokenizer, and normalization paths must be updated for the deployment machine.
 
-On the H01 Jetson, configure the server address and run the smooth client in
-its default dry-run mode:
+On the H01 Jetson, configure the server address and run the smooth **client** in its default dry-run mode:
 
 ```bash
 # Replace this example address with the inference server address.
@@ -349,7 +362,7 @@ CHUNK_SIZE=50 \
 INFERENCE_TRIGGER_REMAINING=30 \
 MAX_ACTION_EXECUTE_HORIZON=35 \
 PROMPT="Push the yellow button next to the plate" \
-bash projects/vla/giga-brain-0/scripts/inference/h01/run_h01_client_smooth.sh
+bash scripts/inference/h01/run_h01_client_smooth.sh
 ```
 
 If the Jetson paths differ from the launcher defaults, set
@@ -366,7 +379,7 @@ motion separately with `INIT_POSE=--init_pose` and a validated
 This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE)
 for details.
 
-## Citation
+## 📖 Citation
 
 ```bibtex
 @article{gigabrainteam2026gigabrain07,
