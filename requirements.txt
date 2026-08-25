@@ -1,0 +1,1 @@
+-r projects/vla/giga-brain-0/requirements-paligemma2.txt

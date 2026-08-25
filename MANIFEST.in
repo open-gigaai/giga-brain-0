@@ -1,0 +1,7 @@
+include README.md
+include LICENSE
+include requirements.txt
+recursive-include giga_models *
+global-exclude projects
+global-exclude __pycache__
+global-exclude *.py[cod]

@@ -126,3 +126,11 @@ venv.bak/
 gmon.out
 **tmp**
 3rdparty
+CLAUDE.md
+.qwen/
+
+train_bash
+test*.py
+.github
+outputs/
+temp/

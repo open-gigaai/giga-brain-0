@@ -1,0 +1,54 @@
+# The sibling giga-models, giga-train, and giga-datasets repositories are
+# supplied through PYTHONPATH. This file installs their eager-import
+# dependencies and the verified PaliGemma2 training stack without optional
+# GigaModels vision-pipeline dependencies.
+
+accelerate==1.13.0
+attrs==24.2.0
+av==15.0.0
+beautifulsoup4==4.12.3
+calflops==0.3.2
+compel==2.0.3
+datasets==4.8.5
+decord==0.6.0
+diffusers==0.34.0
+einops==0.8.0
+filelock==3.18.0
+ftfy==6.3.1
+gdown==5.2.0
+imageio==2.37.0
+imageio-ffmpeg==0.6.0
+lerobot==0.4.4
+lmdb==1.6.2
+lpips==0.1.4
+moviepy==2.1.2
+nvidia-ml-py==12.570.86
+numpy==2.4.4
+omegaconf==2.3.0
+onnxruntime==1.20.1
+open-clip-torch==2.30.0
+opencv-python-headless==4.11.0.86
+paramiko==3.5.0
+peft==0.16.0
+pillow==10.4.0
+psutil==6.1.0
+pyarrow==21.0.0
+pytorch-fid==0.3.0
+pyzmq==27.0.0
+PyYAML==6.0.2
+rtmlib==0.0.13
+safetensors==0.5.2
+scikit-image==0.25.1
+scipy==1.15.1
+segment-anything==1.0
+tensorboard==2.19.0
+terminaltables==3.1.10
+timm==1.0.19
+torch==2.7.1
+torchcodec==0.5
+torchvision==0.22.1
+tqdm==4.67.1
+transformers==4.54.1
+triton==3.3.1
+typing-extensions==4.12.2
+tyro==0.9.13
