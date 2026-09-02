@@ -1,0 +1,6 @@
+include: sat.yaml
+task: sat_robust
+filter_list:
+  - name: robust-choice-extract
+    filter:
+      - function: !function utils.RobustChoiceFilter

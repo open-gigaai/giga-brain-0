@@ -1,0 +1,28 @@
+# Copyright 2025 Xiaomi Corporation.
+
+dataset_path: ${MIMO_DATA_ROOT}/vqa/roboafford-eval
+task: roboafford
+test_split: test  
+dataset_kwargs:
+  token: False
+
+output_type: generate_until
+doc_to_visual: !function utils.roboafford_doc_to_visual
+doc_to_text: !function utils.roboafford_doc_to_text_mimo
+doc_to_target: "mask"
+generation_kwargs:
+  max_new_tokens: 32768
+  do_sample: false
+  temperature: 0.0
+filter_list:
+  - name: point-extract
+    filter:
+      - function: !function utils.PointFilter
+
+process_results: !function utils.roboafford_process_results
+metric_list:
+  - metric: accuracy   
+    aggregation: !function utils.roboafford_aggregate_results
+    higher_is_better: true
+metadata:
+  - version: 0.0

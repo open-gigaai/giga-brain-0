@@ -1,0 +1,7 @@
+# Copyright 2025 Xiaomi Corporation.
+
+group: refspatialbench
+task:
+- refspatial-bench-location
+- refspatial-bench-placement
+- refspatial-bench-unseen

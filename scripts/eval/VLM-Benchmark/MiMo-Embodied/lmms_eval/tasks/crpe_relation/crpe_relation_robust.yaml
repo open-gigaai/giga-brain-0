@@ -1,0 +1,6 @@
+include: crpe_relation.yaml
+task: crpe_relation_robust
+filter_list:
+  - name: robust-choice-extract
+    filter:
+      - function: !function utils.RobustChoiceFilter

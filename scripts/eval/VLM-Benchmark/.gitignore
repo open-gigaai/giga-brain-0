@@ -1,0 +1,18 @@
+model-repos/mimo/
+model-repos/gemma-4-E4B-it/
+model-repos/qwen3.5-4B/
+model-repos/paligemma2/
+model-repos/paligemma2_google/
+docs/
+MiMo-Embodied/eval_results/
+MiMo-Embodied/datasets/
+MiMo-Embodied/mimo.pdf
+model-repos/Gigabrain0.7/
+model-repos/tokenizers/
+require.md
+addmodels.md
+down.sh
+Mimo benchmark.md
+legacy-mimo-eval/eval_results/
+outputs/
+__pycache__/

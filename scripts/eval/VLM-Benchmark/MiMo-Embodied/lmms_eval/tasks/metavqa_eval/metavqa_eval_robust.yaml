@@ -1,0 +1,6 @@
+include: metavqa_eval.yaml
+task: metavqa_eval_robust
+filter_list:
+  - name: robust-choice-extract
+    filter:
+      - function: !function utils.RobustChoiceFilter

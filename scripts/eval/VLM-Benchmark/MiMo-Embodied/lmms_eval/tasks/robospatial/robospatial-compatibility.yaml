@@ -1,0 +1,34 @@
+# Copyright 2025 Xiaomi Corporation.
+
+dataset_path: ${MIMO_DATA_ROOT}/vqa/RoboSpatial-Home
+task: robospatial-compatibility
+test_split: compatibility
+dataset_kwargs:
+  token: False
+
+output_type: generate_until
+doc_to_visual: !function utils.robospatial_doc_to_visual
+doc_to_text: !function utils.robospatial_doc_to_text
+doc_to_target: "answer"
+generation_kwargs:
+  max_new_tokens: 32768
+  temperature: 0.0 
+  top_p: 1.0 
+  num_beams: 1
+  do_sample: false
+lmms_eval_specific_kwargs:
+  default:
+    pre_prompt: ""
+    post_prompt: "\nPut your final answer in \\boxed{}."
+filter_list:
+  - name: "flexible-extract"
+    filter:
+      - function: !function utils.BoxedFilter
+# The return value of process_results will be used by metrics
+process_results: !function utils.robospatial_process_results_QA
+metric_list:
+  - metric: accuracy   
+    aggregation: !function utils.robospatial_aggregate_results
+    higher_is_better: true
+metadata:
+  - version: 0.0

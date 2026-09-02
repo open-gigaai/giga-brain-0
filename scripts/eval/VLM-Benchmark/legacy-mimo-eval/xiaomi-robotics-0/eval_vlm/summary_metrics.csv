@@ -1,0 +1,16 @@
+dataset,num_examples,primary_metric,overall_score,accuracy,success_rate,mean_point_hit_rate,mean_iou,point_hit_rate,correct,success_count,notes,metrics_file
+crpe,2176,accuracy,0.3469669117647059,0.3469669117647059,,,,,755,,,eval_vlm/results/crpe_predictions.metrics.json
+cvbench,2638,accuracy,0.17968157695223655,0.17968157695223655,,,,,474,,,eval_vlm/results/cvbench_predictions.metrics.json
+embspatial,3640,accuracy,0.12692307692307692,0.12692307692307692,,,,,462,,,eval_vlm/results/embspatial_predictions.metrics.json
+eobench,600,accuracy,0.37666666666666665,0.37666666666666665,,,,,226,,,eval_vlm/results/eobench_predictions.metrics.json
+erqa,400,accuracy,0.04,0.04,,,,,16,,,eval_vlm/results/erqa_predictions.metrics.json
+metavqa,9725,accuracy,0.0724935732647815,0.0724935732647815,,,,,705,,,eval_vlm/results/metavqa_predictions.metrics.json
+part_affordance,2000,success_rate,0.039,,0.039,0.023333333333333334,,,,78,,eval_vlm/results/part_affordance_predictions.metrics.json
+realworldqa,765,accuracy,0.7019607843137254,0.7019607843137254,,,,,537,,,eval_vlm/results/realworldqa_predictions.metrics.json
+refspatial,277,success_rate,0.05054151624548736,,0.05054151624548736,0.02527075812274368,,,,14,,eval_vlm/results/refspatial_predictions.metrics.json
+roboafford,338,success_rate,0.12130177514792899,,0.12130177514792899,0.07100591715976333,,,,41,,eval_vlm/results/roboafford_predictions.metrics.json
+roborefit,2000,accuracy,0.0,0.0,,,0.002475043621718943,0.0175,0,,bbox task: accuracy is IoU-threshold accuracy,eval_vlm/results/roborefit_predictions.metrics.json
+robospatial_home,350,weighted_accuracy_success_rate,0.2542857142857143,0.3815789473684211,0.01639344262295082,0.00819672131147541,,,,,mixed exact and point tasks; overall is sample-weighted,eval_vlm/results/robospatial_home_predictions.metrics.json
+sat,150,accuracy,0.02666666666666667,0.02666666666666667,,,,,4,,,eval_vlm/results/sat_predictions.metrics.json
+vabench_point_bbox,300,accuracy,0.0,0.0,,,0.0035373110122413087,0.016666666666666666,0,,bbox task: accuracy is IoU-threshold accuracy,eval_vlm/results/vabench_point_bbox_predictions.metrics.json
+where2place,100,success_rate,0.19,,0.19,0.11,,,,19,,eval_vlm/results/where2place_predictions.metrics.json

@@ -1,0 +1,6 @@
+include: robospatial-configuration.yaml
+task: robospatial-configuration-robust
+filter_list:
+  - name: robust-yes-no-extract
+    filter:
+      - function: !function utils.RobustYesNoFilter

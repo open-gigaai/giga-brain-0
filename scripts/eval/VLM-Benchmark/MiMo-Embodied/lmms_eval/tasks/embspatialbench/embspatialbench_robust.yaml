@@ -1,0 +1,6 @@
+include: embspatialbench.yaml
+task: embspatialbench_robust
+filter_list:
+  - name: robust-choice-extract
+    filter:
+      - function: !function utils.RobustChoiceFilter

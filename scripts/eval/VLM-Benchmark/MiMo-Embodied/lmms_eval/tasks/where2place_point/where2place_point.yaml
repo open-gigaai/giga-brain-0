@@ -1,0 +1,31 @@
+# Copyright 2025 Xiaomi Corporation.
+
+dataset_path: json
+task: where2place_point
+test_split: test
+dataset_kwargs:
+  data_files:
+    test: ${MIMO_DATA_ROOT}/vqa/where2place/point_questions.jsonl
+
+img_root: ${MIMO_DATA_ROOT}/vqa/where2place
+
+output_type: generate_until
+doc_to_visual: !function utils.where2place_doc_to_visual
+doc_to_text: !function utils.where2place_doc_to_text_mimo
+doc_to_target: "mask"
+generation_kwargs:
+  max_new_tokens: 32768
+  do_sample: false
+  temperature: 0.0
+filter_list:
+  - name: point-extract
+    filter:
+      - function: !function utils.PointFilter
+# The return value of process_results will be used by metrics
+process_results: !function utils.where2place_process_results
+metric_list:
+  - metric: accuracy   
+    aggregation: !function utils.where2place_aggregate_results
+    higher_is_better: true
+metadata:
+  - version: 0.0

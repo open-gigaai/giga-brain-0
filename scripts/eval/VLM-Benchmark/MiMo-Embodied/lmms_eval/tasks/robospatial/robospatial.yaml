@@ -1,0 +1,7 @@
+# Copyright 2025 Xiaomi Corporation.
+
+group: robospatial
+task:
+- robospatial-compatibility
+- robospatial-configuration
+- robospatial-context

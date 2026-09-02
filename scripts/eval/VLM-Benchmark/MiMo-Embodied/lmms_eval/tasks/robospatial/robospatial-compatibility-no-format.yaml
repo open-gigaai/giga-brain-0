@@ -1,0 +1,4 @@
+include: robospatial-compatibility.yaml
+task: robospatial-compatibility-no-format
+filter_list: null
+process_results: !function utils.robospatial_process_results_QA_no_format

@@ -25,10 +25,10 @@
 ## TODO
 - [x] Release the GigaBrain-0.7 technical report.
 - [x] Release the GigaBrain-0.7 Code, Model and Sample Data.
-- [ ] Release VLM evaluation code.
-- [ ] Release RoboColiseum benchmark code.
-- [ ] Release RoboTwin2.0 benchmark code.
-- [ ] Release EBench benchmark code.
+- [x] Release VLM evaluation code.
+- [x] Release RoboColiseum benchmark code.
+- [x] Release RoboTwin2.0 benchmark code.
+- [x] Release EBench benchmark code.
 
 
 ## ✨ Introduction
@@ -89,16 +89,25 @@ python -m pip install "git+https://github.com/open-gigaai/giga-models.git@1.1.0"
 export PYTHONPATH="$GIGA_BRAIN_ROOT${PYTHONPATH:+:$PYTHONPATH}"
 ```
 
+**LeRobot v2.1 compatibility:** If you use data in the LeRobot v2.1 format,
+replace the `giga-datasets==1.1.0` installation above with:
+
+```bash
+python -m pip install "giga-datasets==1.0.0"
+```
+
 ## 🚀 Quick start
 
 Run all commands in this section from the repository root after completing
 the installation and environment exports above.
 
 ### 1. Download
-Download the GigaBrain-0.7 pretrained model and sample data from Hugging Face.
+Download GigaBrain-0.7 models and sample data from Hugging Face.
 | Resource | HF Link | Description |
 | :---: | :---: | :--- |
 | GigaBrain-0.7-3.5B-Base | 🤗 [Hugging Face](https://huggingface.co/open-gigaai/GigaBrain-0.7-3.5B-Base) | The pretrained 3.5B base model for GigaBrain-0.7. |
+| GigaBrain-0.7-3.5B-RoboTwin2.0-Clean | 🤗 [Hugging Face](https://huggingface.co/open-gigaai/GigaBrain-0.7-3.5B-RoboTwin2.0-Clean) | The GigaBrain-0.7 3.5B model fine-tuned on clean RoboTwin2.0 data. |
+| GigaBrain-0.7-3.5B-EBench | 🤗 [Hugging Face](https://huggingface.co/open-gigaai/GigaBrain-0.7-3.5B-EBench) | The GigaBrain-0.7 3.5B model fine-tuned for EBench. |
 | GigaBrain-0.7-SampleData | 🤗 [Hugging Face](https://huggingface.co/datasets/open-gigaai/GigaBrain-0.7-SampleData) | Sample data for running the GigaBrain-0.7 training workflow. |
 
 ### 2. Norm

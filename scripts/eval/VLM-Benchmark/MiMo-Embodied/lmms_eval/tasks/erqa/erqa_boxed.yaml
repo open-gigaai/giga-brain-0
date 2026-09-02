@@ -1,0 +1,46 @@
+# Copyright 2025 Xiaomi Corporation.
+
+dataset_path: ${MIMO_DATA_ROOT}/vqa/benchmarks/ERQA
+task: erqa_boxed
+test_split: test
+dataset_kwargs:
+  token: False
+
+output_type: generate_until
+doc_to_visual: !function utils.erqa_doc_to_visual
+doc_to_text: !function utils.erqa_doc_to_text
+doc_to_target: answer
+  
+lmms_eval_specific_kwargs:
+  default:
+    prompt_format: mcq
+    pre_prompt: ""
+    post_prompt: "\nPut your final answer in \\boxed{}."
+
+model_specific_target_kwargs:
+  default: "mcq"
+
+generation_kwargs:
+  max_new_tokens: 32768
+  temperature: 0
+  do_sample: False
+
+filter_list:
+  - name: "flexible-extract"
+    filter:
+      - function: !function utils.MultiChoiceBoxedRegexFilter
+        group_select: 0
+        ignore_case: true
+        ignore_punctuation: true
+        regex_pattern: "([A-Z])\\."
+
+metric_list:
+  - metric: exact_match
+    aggregation: mean
+    higher_is_better: true
+    ignore_case: true
+    ignore_punctuation: true
+
+metadata:
+  - version: 0.0
+  - interleaved_format: false
