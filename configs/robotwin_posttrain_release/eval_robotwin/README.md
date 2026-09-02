@@ -15,9 +15,6 @@ action = left_joints(6) + left_gripper(1)
 每个任务在 `demo_clean` 和 `demo_randomized` 两种场景配置下各跑 100 集，共 50 × 2 = 100 项、10000 集。
 
 > **训练只用 clean 数据，评测覆盖 randomized。**
-> 模型只在 RoboTwin 2.0 的 `demo_clean` 采集数据上后训练，**没有见过任何 randomized 数据**；
-> 评测时 `demo_randomized`（随机光照、纹理、干扰物、物体位姿）属于跨域泛化，
-> 因此它的成功率天然低于 `demo_clean`，这是预期结果，不是配置错误。
 
 ## 仿真环境
 
@@ -59,7 +56,7 @@ checkpoint；`run_giga_server.sh` 因此也默认使用 ID 0。若自行改动�
 
 ### 参考训练日志
 
-`logs/train_robotwin_reference.log` 是我们实际跑这个任务的日志（已脱敏），可以用来对齐 loss 曲线和各阶段耗时。
+`logs/train_robotwin_reference.log` 是我们实际跑这个任务的日志，可以用来对齐 loss 曲线和各阶段耗时。
 日志中的 `GigaBrain0Trainer` / `GigaBrain0Transform` 是发布前的旧类名；当前发布入口分别为
 `GigaBrain07Trainer` / `GigaBrain07Transform`，模型协议不变。
 
@@ -117,19 +114,13 @@ python communication/robotwin_eval_client.py \
 ### 预测 50 步、只执行 30 步
 
 模型一次推理输出 `chunk_size=50` 步动作，但我们只执行前 30 步（`pos_lookahead_step 30`），
-剩下 20 步丢掉、重新取观测再推理。这是评测里一个重要设置：
-
-- 动作块越往后，误差累积越大，后 20 步基本已经偏离当前场景；
-- 每 30 步就重新看一次图像，闭环频率更高，物体被碰动、抓滑了都能及时纠正；
-- 代价是推理次数多约 1.7 倍，单条推理 7~12s，所以要靠多客户端并行摊掉。
-
-`pos_lookahead_step` 必须 ≤ `chunk_size`(50)。填 50 就是开环执行完整块，成功率会明显下降。
+剩下 20 步丢掉、重新取观测再推理。
 
 ## 脚本说明
 
 | 脚本 | 运行位置 | 说明 |
 | --- | --- | --- |
-| `run_giga_server.sh` | 服务端机器 | 调用仓库 `scripts/inference/inference_agilex_server_unified.py`，未做修改 |
+| `run_giga_server.sh` | 服务端机器 | 调用仓库 `scripts/inference/inference_agilex_server_unified.py` |
 | `robotwin_eval_client.py` | RoboTwin 仓库 `communication/` | 单任务仿真客户端，需拷进 RoboTwin 后运行 |
 | `run_robotwin_parallel.sh` | RoboTwin 仓库根目录 | 拉起 N 个客户端并行跑 100 项 |
 | `parse_eval_results.py` | 任意 | 汇总 `_result.txt` 输出成功率 |
