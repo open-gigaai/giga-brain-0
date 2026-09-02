@@ -13,6 +13,7 @@
 </div>
 
 ## 📰 News
+- **`[2026/09/02]`** Released VLM evaluation code and RoboColiseum, RoboTwin 2.0, and EBench training and evaluation workflows.
 - **`[2026/08/25]`** Released the GigaBrain-0.7 Code, Model and Sample Data.
 - **`[2026/08/17]`** Released the GigaBrain-0.7 technical report.
 - **`[2026/03/10]`** We will host the [GigaBrain Challenge 2026 @ CVPR 2026](https://gigaai-research.github.io/GigaBrain-Challenge-2026/) with three competition tracks: RoboTwin (simulation), GigaWorld (World Model), and RoboChallenge (real robot). We also have a call for papers on [OpenReview](https://openreview.net/group?id=thecvf.com/CVPR/2026/Workshop/GigaBrain_Challenge) and will select a Best Paper Award.
