@@ -4,7 +4,7 @@
 
   <p><b>English</b> | <a href="README_zh.md">中文</a></p>
 
-  <a href="../../LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License"></a>
+  <a href="../../../LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License"></a>
   <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB" alt="Python 3.10+">
   <img src="https://img.shields.io/badge/Benchmark-MiMo--Embodied-2E8B57" alt="MiMo-Embodied">
 </div>
@@ -32,7 +32,7 @@ VLM-Benchmark/
 ├── README_zh.md
 ├── model-repos/                  # Local source trees, checkpoints, and tokenizers
 ├── datasets/                     # Legacy model dataset defaults
-├── MiMo-Embodied/                # MiMo tasks, adapters, runners, and tests
+├── MiMo-Embodied/                # MiMo tasks, adapters, and runners
 └── legacy-mimo-eval/             # Xiaomi, Spirit, and Wall MiMo programs
 ```
 
@@ -40,7 +40,13 @@ Model weights, datasets, generated results, and virtual environments are local r
 
 ## ⚡ Installation
 
-Run all commands from `benchmarks/VLM-Benchmark` unless a section says otherwise. Use a separate environment for each model family because their PyTorch and Transformers requirements may conflict.
+Run all commands from `scripts/eval/VLM-Benchmark` unless a section says otherwise. From the repository root:
+
+```bash
+cd scripts/eval/VLM-Benchmark
+```
+
+Use a separate environment for each model family because their PyTorch and Transformers requirements may conflict.
 
 Install the common benchmark packages:
 
@@ -93,7 +99,7 @@ Gigabrain0.7 expects at least:
 model-repos/Gigabrain0.7/
 ├── config.json
 ├── inference_config.json
-└── diffusion_pytorch_model.*
+└── diffusion_pytorch_model.bin
 ```
 
 Default dataset roots:
@@ -180,19 +186,18 @@ Each runner writes into its own ignored output directory:
 
 ```text
 MiMo-Embodied/eval_results/<model-or-run>/
-legacy-mimo-eval/*/outputs/
+legacy-mimo-eval/xiaomi-robotics-0/eval_vlm/results/
+legacy-mimo-eval/spirit-v1.5/outputs/
+legacy-mimo-eval/wall-oss-0.5/outputs/
 ```
 
 Gigabrain0.7 MiMo runs include `summary.json`, `summary.md`, `run_plan.json`, per-task results, samples, audit records, and logs. Legacy artifacts depend on the model-specific evaluator.
 
-## ✅ Tests
+## ✅ Validation
 
-```bash
-PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=MiMo-Embodied \
-python -m pytest -q -p no:cacheprovider MiMo-Embodied/tests
-```
+The release does not include a standalone `MiMo-Embodied/tests` test suite. Use the `--dry-run` commands in [Quick Start](#-quick-start) to validate the tracked runner configurations before a full evaluation.
 
-Use `--dry-run` before a full evaluation. A successful dry run verifies configuration expansion only; it does not validate checkpoint compatibility, dataset contents, CUDA kernels, or full inference.
+A successful dry run verifies configuration expansion only; it does not validate checkpoint compatibility, dataset contents, CUDA kernels, or full inference.
 
 ## 📚 Documentation
 

@@ -22,9 +22,9 @@ python evaluations/eval_robospatial_home_vlm.py \
   --dataset-root ../../datasets/public_datasets/VLM/vqa/RoboSpatial-Home \
   --output-jsonl outputs/robospatial_home_predictions.jsonl \
   --batch-size 1 \
-  --max-samples 10
+  --limit 10
 ```
 
-Remove `--max-samples 10` for a full run. The remaining task entrypoints are the `eval_*_vlm.py` files under `evaluations/`; example shell launchers are under `scripts/`.
+Remove `--limit 10` for a full run. The remaining task entrypoints are the `eval_*_vlm.py` files under `evaluations/`; example shell launchers are under `scripts/`.
 
 See `evaluations/README.md` for task-specific arguments.

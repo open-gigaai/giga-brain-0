@@ -35,8 +35,8 @@ PRETRAINED_PATH=${PRETRAINED_PATH:-/path/to/huggingface/models--google--paligemm
 # FAST action tokenizer 目录 (对应 prompt_cfg.fast_tokenizer_path)
 FAST_TOKENIZER_PATH=${FAST_TOKENIZER_PATH:-/path/to/huggingface/models--physical-intelligence--fast}
 
-# embodiment id：训练 config 未开启 robot_type_embodiment_id_overrides，用默认 0。
-# 若你训练时把 agilex_cobot_magic 映射到 6，这里也要改成 6。
+# embodiment id：发布训练 config 显式把 agilex_cobot_magic 映射到 0，
+# 与参考 checkpoint 的训练分支一致。若训练时修改了映射，这里必须同步修改。
 EMBODIMENT_ID=${EMBODIMENT_ID:-0}
 # delta-mask 的 robot_type 键，对应训练 config 的 delta_action_cfg.mask
 ROBOT_TYPE=${ROBOT_TYPE:-agilex_cobot_magic}

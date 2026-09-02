@@ -23,7 +23,7 @@ Do not commit machine-specific paths, checkpoints, datasets, or generated output
 - Spirit: launchers under `spirit-v1.5/scripts/`; override `CKPT_PATH`, `DATASET_PATH`, `BACKBONE_PATH`, or `PROCESSOR_PATH` as needed.
 - Wall: launchers under `wall-oss-0.5/scripts/`; pass checkpoint and dataset arguments documented in `wall-oss-0.5/evaluations/README.md`.
 
-Generated results belong under `eval_results/` or `outputs/`, both of which must remain untracked.
+Generated results belong under the model-specific ignored `results/`, `eval_results/`, or `outputs/` directories and must remain untracked.
 
 ## LLaVA JSONL Inputs
 

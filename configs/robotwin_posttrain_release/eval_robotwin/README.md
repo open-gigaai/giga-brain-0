@@ -52,9 +52,16 @@ bash configs/robotwin_posttrain_release/scripts/train_robotwin.sh
 训练前先改配置里的用户配置区：`DATA_ROOT` / `NORM_STATS_PATH` / `PRETRAINED_CKPT` / `PROJECT_DIR`。
 checkpoint 落在 `<PROJECT_DIR>/models/checkpoint_*/`，评测用其中的 `model_ema/`。
 
+数据集的 `meta/info.json` 必须包含 `"robot_type": "agilex_cobot_magic"`。发布配置通过
+`robot_type_embodiment_id_overrides` 将它显式映射到 embodiment ID 0，以对齐参考训练和发布
+checkpoint；`run_giga_server.sh` 因此也默认使用 ID 0。若自行改动训练映射，评测时必须同步设置
+`EMBODIMENT_ID`，否则会调用错误的 embodiment-specific action projection。
+
 ### 参考训练日志
 
 `logs/train_robotwin_reference.log` 是我们实际跑这个任务的日志（已脱敏），可以用来对齐 loss 曲线和各阶段耗时。
+日志中的 `GigaBrain0Trainer` / `GigaBrain0Transform` 是发布前的旧类名；当前发布入口分别为
+`GigaBrain07Trainer` / `GigaBrain07Transform`，模型协议不变。
 
 注意日志的并行规模和本目录配置不同：日志是多机 32 进程跑的（`batch_size_per_gpu=32`，全局 batch 1024），
 所以只跑到 25000 步；本目录的 config 是 8 卡（全局 batch 256），要 100000 步才等价。

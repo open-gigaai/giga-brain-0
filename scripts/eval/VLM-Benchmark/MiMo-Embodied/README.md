@@ -6,10 +6,16 @@
 
 ## 目录结构
 
-以下路径均相对于仓库根目录：
+本文命令均从 `scripts/eval/VLM-Benchmark` 目录运行。从仓库根目录进入：
+
+```bash
+cd scripts/eval/VLM-Benchmark
+```
+
+以下路径均相对于该目录：
 
 ```text
-giga-benchmark/
+VLM-Benchmark/
 ├── model-repos/
 │   ├── gigabrain/                     # GigaModels 代码
 │   ├── Gigabrain0.7/                  # 模型权重
@@ -31,7 +37,6 @@ giga-benchmark/
     │   └── setup_hy_vla_env.sh
     ├── lmms_eval/
     ├── tools/
-    ├── tests/
     ├── datasets/
     └── eval_results/
 ```
@@ -47,11 +52,7 @@ python -m pip install --upgrade pip
 python -m pip install -e MiMo-Embodied
 ```
 
-初始化 GigaModels：
-
-```bash
-git submodule update --init model-repos/gigabrain
-```
+将包含 `giga_models/` Python 包的 GigaModels 源码放到 `model-repos/gigabrain/`。该路径不是本仓库的 Git submodule，需要单独准备。
 
 多卡测评时，每张 GPU 独立加载一份模型，并行处理不同数据集。模型首次加载较慢属于正常现象。
 
@@ -259,3 +260,7 @@ python -m json.tool MiMo-Embodied/eval_results/gigabrain0.7/<run_time>/summary.j
 | RoboRefIt | `roborefit` |
 
 13 项指标等权计算宏平均。
+
+## 验证
+
+本次发布不包含 `MiMo-Embodied/tests` 下的独立测试文件。使用上文的 `--dry-run` 命令验证已提交的 runner 配置；dry-run 不会加载模型或检查数据集内容。

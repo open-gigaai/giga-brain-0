@@ -34,4 +34,4 @@ bash legacy-mimo-eval/spirit-v1.5/scripts/run_robospatial_home_vlm.sh \
 
 Remove `--max-samples 10` for a full run. Other tasks use the corresponding launcher under `spirit-v1.5/scripts/`, for example `run_erqa_vlm.sh`, `run_crpe_vlm.sh`, and `run_refspatial_vlm.sh`.
 
-Generated outputs are written under `spirit-v1.5/outputs/` unless `OUTPUT_DIR` is set.
+Generated outputs are written under `legacy-mimo-eval/spirit-v1.5/outputs/` unless `OUTPUT_DIR` is set.

@@ -4,7 +4,7 @@
 
   <p><a href="README.md">English</a> | <b>中文</b></p>
 
-  <a href="../../LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License"></a>
+  <a href="../../../LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-blue.svg" alt="License"></a>
   <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB" alt="Python 3.10+">
   <img src="https://img.shields.io/badge/Benchmark-MiMo--Embodied-2E8B57" alt="MiMo-Embodied">
 </div>
@@ -32,7 +32,7 @@ VLM-Benchmark/
 ├── README_zh.md
 ├── model-repos/                  # 本地模型源码、权重和 tokenizer
 ├── datasets/                     # legacy 模型的默认数据目录
-├── MiMo-Embodied/                # MiMo 任务、适配器、runner 和测试
+├── MiMo-Embodied/                # MiMo 任务、适配器和 runner
 └── legacy-mimo-eval/             # Xiaomi、Spirit 和 Wall 的 MiMo 程序
 ```
 
@@ -40,7 +40,13 @@ VLM-Benchmark/
 
 ## ⚡ 环境安装
 
-除非另有说明，所有命令均从 `benchmarks/VLM-Benchmark` 运行。不同模型的 PyTorch 和 Transformers 依赖可能冲突，建议按模型系列使用独立环境。
+除非另有说明，所有命令均从 `scripts/eval/VLM-Benchmark` 运行。从仓库根目录进入：
+
+```bash
+cd scripts/eval/VLM-Benchmark
+```
+
+不同模型的 PyTorch 和 Transformers 依赖可能冲突，建议按模型系列使用独立环境。
 
 安装公共测评包：
 
@@ -93,7 +99,7 @@ Gigabrain0.7 目录至少包含：
 model-repos/Gigabrain0.7/
 ├── config.json
 ├── inference_config.json
-└── diffusion_pytorch_model.*
+└── diffusion_pytorch_model.bin
 ```
 
 默认数据目录：
@@ -180,19 +186,18 @@ python legacy-mimo-eval/wall-oss-0.5/evaluations/eval_robospatial_home_vlm.py \
 
 ```text
 MiMo-Embodied/eval_results/<model-or-run>/
-legacy-mimo-eval/*/outputs/
+legacy-mimo-eval/xiaomi-robotics-0/eval_vlm/results/
+legacy-mimo-eval/spirit-v1.5/outputs/
+legacy-mimo-eval/wall-oss-0.5/outputs/
 ```
 
 Gigabrain0.7 的 MiMo 结果包含 `summary.json`、`summary.md`、`run_plan.json`、各任务结果、样本、审计记录和日志。legacy 结果格式由各模型脚本决定。
 
-## ✅ 测试
+## ✅ 验证
 
-```bash
-PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=MiMo-Embodied \
-python -m pytest -q -p no:cacheprovider MiMo-Embodied/tests
-```
+本次发布不包含独立的 `MiMo-Embodied/tests` 测试集。完整测评前，请使用[快速开始](#-快速开始)中的 `--dry-run` 命令检查已提交的 runner 配置。
 
-完整测评前应先执行 `--dry-run`。dry-run 成功只代表配置展开正常，不代表 checkpoint、数据内容、CUDA 算子或完整推理已经验证。
+dry-run 成功只代表配置展开正常，不代表 checkpoint、数据内容、CUDA 算子或完整推理已经验证。
 
 ## 📚 详细文档
 

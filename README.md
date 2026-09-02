@@ -66,7 +66,14 @@ and world-model-generated data.
 
 ## ⚡ Installation
 
-GigaBrain-0.7 uses the following dependencies:
+This installation supports the two top-level mainline training configs:
+[`gb07_pg2_pick_and_place_piper_30k.py`](configs/gb07_pg2_pick_and_place_piper_30k.py)
+and
+[`gb07_pg2_push_buttons_h01_30k.py`](configs/gb07_pg2_push_buttons_h01_30k.py).
+Benchmark workflows use their own installation instructions and external
+dependencies; see the guides in [Benchmark releases](#-benchmark-releases).
+
+The mainline workflow uses the following dependencies:
 
 1. [`giga-datasets==1.1.0`](https://pypi.org/project/giga-datasets/1.1.0/)
 2. [`giga-train==1.1.0`](https://pypi.org/project/giga-train/1.1.0/)
@@ -89,17 +96,25 @@ python -m pip install "git+https://github.com/open-gigaai/giga-models.git@1.1.0"
 export PYTHONPATH="$GIGA_BRAIN_ROOT${PYTHONPATH:+:$PYTHONPATH}"
 ```
 
-**LeRobot v2.1 compatibility:** If you use data in the LeRobot v2.1 format,
-replace the `giga-datasets==1.1.0` installation above with:
+**LeRobot v2.1 compatibility for the two mainline configs:** If their input
+data uses the LeRobot v2.1 format, replace the `giga-datasets==1.1.0`
+installation above with:
 
 ```bash
 python -m pip install "giga-datasets==1.0.0"
 ```
 
+This substitution is not a repository-wide benchmark requirement. Benchmark
+workflows may use different dataset readers and dependency versions; follow
+the corresponding benchmark guide instead.
+
 ## 🚀 Quick start
 
-Run all commands in this section from the repository root after completing
-the installation and environment exports above.
+This section covers the mainline PiPER and H01 configs linked in
+[Installation](#-installation). Run all commands from the repository root after
+completing the installation and environment exports above. For benchmark
+training or evaluation, start from the corresponding guide in
+[Benchmark releases](#-benchmark-releases).
 
 ### 1. Download
 Download GigaBrain-0.7 models and sample data from Hugging Face.
@@ -232,12 +247,16 @@ than expecting every raw training loss to decrease monotonically.
 See [configure_introduction.md](docs/configure_introduction.md)
 for the configuration schema.
 
-### 4. Evaluation
+### 4. Offline LeRobot rollout evaluation
 
-The maintained evaluation entry point is
+For the two mainline configs, the maintained offline LeRobot rollout entry point is
 `inference_gigabrain07_flow_rollout.py`. It rebuilds the training transform,
 loads the EMA checkpoint by default, and writes per-episode MSE/MAE metrics
 (and optional plots/replays).
+
+This evaluates saved LeRobot episodes; it is separate from the VLM-Benchmark,
+RoboColiseum, RoboTwin 2.0, and EBench evaluation workflows linked under
+[Benchmark releases](#-benchmark-releases).
 
 ```bash
 python scripts/inference/inference_gigabrain07_flow_rollout.py \
@@ -382,6 +401,19 @@ state, 16D action, three camera streams, ROS topics, and predicted values should
 live control be enabled with `EXECUTE_ACTION=--execute_action`. Enable startup
 motion separately with `INIT_POSE=--init_pose` and a validated
 `READY_POSE_NPY=/path/to/ready_pose.npy`.
+
+## 🧪 Benchmark
+
+Each benchmark has its own environment, external resources, and execution
+workflow. Follow the linked guide instead of treating the mainline installation
+below as a repository-wide benchmark environment.
+
+| Benchmark | Released workflow | Guide |
+| --- | --- | --- |
+| VLM-Benchmark | MiMo-Embodied evaluation for GigaBrain-0.7 and embodied VLM baselines | [VLM-Benchmark README](scripts/eval/VLM-Benchmark/README.md) |
+| RoboColiseum | Post-training for instruction, spatial, and manipulation suites, plus the platform connector | [RoboColiseum README](configs/robocoliseum_posttrain_release/README.md) |
+| RoboTwin 2.0 | Post-training and simulation evaluation across 50 bimanual tasks | [RoboTwin 2.0 README](configs/robotwin_posttrain_release/eval_robotwin/README.md) |
+| EBench | Local and online GenManip evaluation | [EBench README](configs/ebench_posttrain_release/eval_ebench/README.md) |
 
 ## 📄 License
 

@@ -6,11 +6,10 @@ import tyro
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent
-REPO_ROOT = PROJECT_ROOT.parents[2]
-CODE_ROOT = REPO_ROOT.parent
+CHECKOUT_ROOT = PROJECT_ROOT.parent
 
 
-def _resolve_dependency_root(env_name: str, *sibling_names: str) -> Path:
+def _resolve_dependency_root(env_name: str, *sibling_names: str) -> Path | None:
     configured = os.environ.get(env_name)
     if configured:
         root = Path(configured).expanduser().resolve()
@@ -18,27 +17,28 @@ def _resolve_dependency_root(env_name: str, *sibling_names: str) -> Path:
             raise FileNotFoundError(f'{env_name} does not exist: {root}')
         return root
     for sibling_name in sibling_names:
-        root = CODE_ROOT / sibling_name
+        root = CHECKOUT_ROOT / sibling_name
         if root.is_dir():
             return root
-    expected = ', '.join(os.fspath(CODE_ROOT / name) for name in sibling_names)
-    raise FileNotFoundError(f'Set {env_name}; no dependency checkout found at: {expected}')
+    return None
 
 
 GIGA_TRAIN_ROOT = _resolve_dependency_root('GIGA_TRAIN_ROOT', 'giga-train')
 GIGA_DATASETS_ROOT = _resolve_dependency_root(
     'GIGA_DATASETS_ROOT', 'giga-datasets', 'giga-datasets-v3.0'
 )
-os.environ['GIGA_TRAIN_ROOT'] = os.fspath(GIGA_TRAIN_ROOT)
-os.environ['GIGA_DATASETS_ROOT'] = os.fspath(GIGA_DATASETS_ROOT)
+if GIGA_TRAIN_ROOT is not None:
+    os.environ['GIGA_TRAIN_ROOT'] = os.fspath(GIGA_TRAIN_ROOT)
+if GIGA_DATASETS_ROOT is not None:
+    os.environ['GIGA_DATASETS_ROOT'] = os.fspath(GIGA_DATASETS_ROOT)
 BOOTSTRAP_PATHS = tuple(
     os.fspath(path)
     for path in (
-        REPO_ROOT,
         PROJECT_ROOT,
         GIGA_TRAIN_ROOT,
         GIGA_DATASETS_ROOT,
     )
+    if path is not None
 )
 for _path in reversed(BOOTSTRAP_PATHS):
     if _path not in sys.path:

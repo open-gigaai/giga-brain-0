@@ -19,6 +19,11 @@ robot mask 决定哪些维度被监督。
 """
 
 ACTION_CHUNK = 50
+ROBOT_TYPE = "agilex_cobot_magic"
+# The released/reference RoboTwin checkpoint was trained on embodiment branch 0.
+# Keep this explicit because the shared default mapping assigns this exact
+# robot_type string to branch 6.
+EMBODIMENT_ID = 0
 
 # ========== 用户配置区 ==========
 # RoboTwin 2.0 LeRobot 数据集根目录 (含 meta/info.json)
@@ -54,7 +59,7 @@ data_or_config = [
 
 
 config = dict(
-    runners=["giga_brain_0.GigaBrain0Trainer"],
+    runners=["gigabrain07.GigaBrain07Trainer"],
     project_dir=PROJECT_DIR,
     launch=dict(
         gpu_ids=[0, 1, 2, 3, 4, 5, 6, 7],
@@ -73,13 +78,16 @@ config = dict(
             batch_size_per_gpu=32,
             num_workers=16,
             transform=dict(
-                type="GigaBrain0Transform",
+                type="GigaBrain07Transform",
                 is_train=True,
                 # 200k 预训练是 proprio_anchor: state 走 proprio token 通路，
                 # 不进文本 prompt (与 ckpt 的 inference_config.json 一致)。
                 state_input_mode="proprio_anchor",
                 observation_memory_size=1,
                 agent_pos_config=dict(state=32),
+                robot_type_embodiment_id_overrides={
+                    ROBOT_TYPE: EMBODIMENT_ID,
+                },
                 use_quaternion_to_6d=True,
                 delta_action_cfg=dict(
                     selector="robot_type",
@@ -88,7 +96,7 @@ config = dict(
                     # 14 个有效维度 + 2 个 padding；gripper 位 (idx 6/13) 为 False
                     # 表示绝对值而非 delta。
                     mask={
-                        "agilex_cobot_magic": [
+                        ROBOT_TYPE: [
                             True, True, True, True, True, True, False,
                             True, True, True, True, True, True, False,
                             False, False,
@@ -131,11 +139,12 @@ config = dict(
                     enable_end_effector_token=True,
                     vlm_type="paligemma2",
                     sample_ratios=dict(
-                        task_only=1.0,
-                        task_with_subtask=0.0,
-                        task_only_using_subtask_regression=0.0,
-                        task_only_using_fast_regression=0.0,
-                        task_with_subtask_using_fast_regression=0.0,
+                        input_task=1.0,
+                        input_subtask=0.0,
+                        input_task_target_subtask=0.0,
+                        input_task_target_action=0.0,
+                        input_subtask_target_action=0.0,
+                        input_task_target_subtask_action=0.0,
                     ),
                 ),
             ),
@@ -148,6 +157,10 @@ config = dict(
     ),
     models=dict(
         pretrained=PRETRAINED_CKPT,
+        vlm_type="paligemma2",
+        state_input_mode="proprio_anchor",
+        observation_memory_size=1,
+        agent_pos_config=dict(state=32),
         enable_knowledge_insulation=False,
         enable_next_token_prediction=False,
         # 动作损失完整回传到 VLM (单次 fused forward)。不设这一项会继承
