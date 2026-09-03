@@ -14,7 +14,8 @@ action = left_joints(6) + left_gripper(1)
 
 每个任务在 `demo_clean` 和 `demo_randomized` 两种场景配置下各跑 100 集，共 50 × 2 = 100 项、10000 集。
 
-> **训练只用 clean 数据，评测覆盖 randomized。**
+> **训练只用 clean 数据，评测覆盖 clean 和 randomized。**
+> 模型只在 RoboTwin 2.0 的 `demo_clean` 采集数据上后训练，**没有见过任何 randomized 数据**；
 
 ## 仿真环境
 
@@ -60,10 +61,10 @@ checkpoint；`run_giga_server.sh` 因此也默认使用 ID 0。若自行改动�
 日志中的 `GigaBrain0Trainer` / `GigaBrain0Transform` 是发布前的旧类名；当前发布入口分别为
 `GigaBrain07Trainer` / `GigaBrain07Transform`，模型协议不变。
 
-注意日志的并行规模和本目录配置不同：日志是多机 32 进程跑的（`batch_size_per_gpu=32`，全局 batch 1024），
+注意日志的并行规模和本目录配置不同：日志是多机 32 卡跑的（`batch_size_per_gpu=32`，全局 batch 1024），
 所以只跑到 25000 步；本目录的 config 是 8 卡（全局 batch 256），要 100000 步才等价。
-最终评测用的是 32进程 **20000 步** 的权重，等价于8卡 80000步权重。
-config 里 `max_steps=80000`、`checkpoint_keeps` 按 1 万步取点，就是照这个来的。
+最终评测用的是 32卡 **20000 步** 的权重，等价于8卡 80000步权重。
+config 里 `max_steps=80000`、`checkpoint_keeps` 按 1 万步取点。
 
 ## 评测
 
@@ -114,7 +115,10 @@ python communication/robotwin_eval_client.py \
 ### 预测 50 步、只执行 30 步
 
 模型一次推理输出 `chunk_size=50` 步动作，但我们只执行前 30 步（`pos_lookahead_step 30`），
-剩下 20 步丢掉、重新取观测再推理。
+剩下 20 步丢掉、重新取观测再推理。这是评测里一个重要设置：
+
+- 动作块越往后，误差累积越大，后 20 步基本已经偏离当前场景；
+- 每 30 步就重新看一次图像，闭环频率更高，物体被碰动、抓滑了都能及时纠正；
 
 ## 脚本说明
 
