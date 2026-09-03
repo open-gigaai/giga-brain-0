@@ -154,7 +154,7 @@ class GigaBrain07Loss(nn.Module):
         return noise
 
     def _sample_beta(self, alpha: float, beta: float, bsize: int, device: torch.device) -> torch.Tensor:
-        """Samples from a Beta distribution using two Gamma variables.
+        """Samples from a Beta distribution.
 
         Args:
             alpha (float): The alpha parameter of the Beta distribution.
@@ -165,9 +165,9 @@ class GigaBrain07Loss(nn.Module):
         Returns:
             torch.Tensor: Samples from the Beta distribution.
         """
-        gamma1 = torch.empty((bsize,), device=device).uniform_(0, 1).pow(1 / alpha)
-        gamma2 = torch.empty((bsize,), device=device).uniform_(0, 1).pow(1 / beta)
-        return gamma1 / (gamma1 + gamma2)
+        alpha_tensor = torch.as_tensor(alpha, dtype=torch.float32, device=device)
+        beta_tensor = torch.as_tensor(beta, dtype=torch.float32, device=device)
+        return torch.distributions.Beta(alpha_tensor, beta_tensor).sample((bsize,))
 
     def sample_time(self, bsize: int, device: torch.device) -> torch.Tensor:
         """Samples timesteps for the diffusion process.
