@@ -1,21 +1,22 @@
 #!/usr/bin/env bash
 set -u
 
-SCRIPT_DIR=$(pwd)
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+EVAL_DIR=$(cd "${SCRIPT_DIR}/.." && pwd)
 
 # GigaBrain 0.7 仓库目录
-GIGABRAIN_ROOT=${GIGABRAIN_ROOT:-${SCRIPT_DIR}/../../giga-brain-0}  
+GIGABRAIN_ROOT=${GIGABRAIN_ROOT:-$(cd "${EVAL_DIR}/../../.." && pwd)}
 SERVER_SCRIPT=${GIGABRAIN_ROOT}/scripts/inference/inference_agilex_server_unified.py
 # 模型目录
-MODEL_PATH=${MODEL_PATH:-}  
+MODEL_PATH=${MODEL_PATH:-}
 NORM_STATS_PATH=${NORM_STATS_PATH:-}
-TOKENIZER_PATH=/shared_disk/models/huggingface/models--google--paligemma2-3b-pt-224
-FAST_TOKENIZER_PATH=/shared_disk/models/huggingface/models--physical-intelligence--fast
+TOKENIZER_PATH=${TOKENIZER_PATH:-/path/to/your/model/models--google--paligemma2-3b-pt-224}
+FAST_TOKENIZER_PATH=${FAST_TOKENIZER_PATH:-/path/to/your/model/models--physical-intelligence--fast}
 # 起始服务端口
 BASE_PORT=${BASE_PORT:-8000}
 NUM_PORTS=${NUM_PORTS:-8}
 
-LOG_DIR=${SCRIPT_DIR}/logs/giga/$(date +%Y%m%d_%H%M%S)
+LOG_DIR=${EVAL_DIR}/logs/giga/$(date +%Y%m%d_%H%M%S)
 IFS=',' read -ra gpu_list <<< "${CUDA_VISIBLE_DEVICES:-0,1,2,3,4,5,6,7}"
 mkdir -p "${LOG_DIR}"
 

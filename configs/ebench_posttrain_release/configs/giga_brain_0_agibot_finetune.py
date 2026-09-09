@@ -1,7 +1,7 @@
 action_chunk = 50
 data_or_config = []
 agibot_data_paths = [
-    '/shared_disk/datasets/giga_datasets/train_data/g1_wuhan1018/fold_the_shirt/flat_fold_shirt_part1_0/merged',
+    '/path/to/your/data/g1_wuhan1018/fold_the_shirt/flat_fold_shirt_part1_0/merged',
 ]
 for data_path in agibot_data_paths:
     data_or_config.append(
@@ -16,7 +16,7 @@ for data_path in agibot_data_paths:
     )
 config = dict(
     runners=['gigabrain07.GigaBrain07Trainer'],
-    project_dir='/shared_disk/users/yiran.ding/experiments/giga_brain_0_agibot_finetune',
+    project_dir='/path/to/your/project/experiments/giga_brain_0_agibot_finetune',
     launch=dict(
         gpu_ids=[0, 1, 2, 3, 4, 5, 6, 7],
         distributed_type='FSDP',
@@ -66,7 +66,7 @@ config = dict(
                 ),
                 norm_cfg=dict(
                     norm_stats_path={
-                        '1': '/shared_disk/datasets/giga_datasets/train_data/g1_wuhan1018/gigabrain-mobile_norm_stats.json',
+                        '1': '/path/to/your/norm/gigabrain-mobile_norm_stats.json',
                     },
                     use_quantiles=True,
                 ),
@@ -77,8 +77,8 @@ config = dict(
                     enable_depth_img=False,
                 ),
                 prompt_cfg=dict(
-                    tokenizer_model_path='/gpfs/users/wangyunmo/pretrain/models--google--paligemma2-3b-pt-224',
-                    fast_tokenizer_path='/gpfs/users/wangyunmo/pretrain/models--physical-intelligence--fast',
+                    tokenizer_model_path='/path/to/your/model/models--google--paligemma2-3b-pt-224',
+                    fast_tokenizer_path='/path/to/your/model/models--physical-intelligence--fast',
                     max_length=200,
                     # Can be change following sample_ratios according to your own data.
                     discrete_state_input=True,

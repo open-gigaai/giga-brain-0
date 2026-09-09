@@ -2,9 +2,9 @@
 # GigaBrain-0.7 RoboTwin 评测服务端 (单端口 ZMQ policy server)
 #
 # 用法:
-#   export GIGABRAIN_ROOT=/path/to/giga-brain-0
-#   export MODEL_PATH=/path/to/checkpoint/model_ema
-#   export NORM_STATS_PATH=/path/to/giga_norm_stats.json
+#   export GIGABRAIN_ROOT=/path/to/your/project/giga-brain-0
+#   export MODEL_PATH=/path/to/your/model/checkpoint/model_ema
+#   export NORM_STATS_PATH=/path/to/your/norm/giga_norm_stats.json
 #   CUDA_VISIBLE_DEVICES=0 bash scripts/run_giga_server.sh
 #
 # 协议 (必须与训练 config 和客户端一致):
@@ -31,9 +31,9 @@ MODEL_PATH=${MODEL_PATH:-}
 # 训练时用的 norm_stats.json (14 维)
 NORM_STATS_PATH=${NORM_STATS_PATH:-}
 # PaliGemma2 HF tokenizer 目录 (对应训练 config 的 prompt_cfg.tokenizer_model_path)
-PRETRAINED_PATH=${PRETRAINED_PATH:-/path/to/huggingface/models--google--paligemma2-3b-pt-224}
+PRETRAINED_PATH=${PRETRAINED_PATH:-/path/to/your/model/models--google--paligemma2-3b-pt-224}
 # FAST action tokenizer 目录 (对应 prompt_cfg.fast_tokenizer_path)
-FAST_TOKENIZER_PATH=${FAST_TOKENIZER_PATH:-/path/to/huggingface/models--physical-intelligence--fast}
+FAST_TOKENIZER_PATH=${FAST_TOKENIZER_PATH:-/path/to/your/model/models--physical-intelligence--fast}
 
 # embodiment id：发布训练 config 显式把 agilex_cobot_magic 映射到 0，
 # 与参考 checkpoint 的训练分支一致。若训练时修改了映射，这里必须同步修改。
@@ -65,7 +65,7 @@ if [ -z "${NORM_STATS_PATH}" ]; then
 fi
 if [ ! -f "${SERVER_SCRIPT}" ]; then
   echo "[ERROR] 找不到 server 脚本: ${SERVER_SCRIPT}" >&2
-  echo "        请设置 export GIGABRAIN_ROOT=/path/to/giga-brain-0" >&2
+  echo "        请设置 export GIGABRAIN_ROOT=/path/to/your/project/giga-brain-0" >&2
   exit 1
 fi
 

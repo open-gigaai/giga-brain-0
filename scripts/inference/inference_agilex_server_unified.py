@@ -6,28 +6,23 @@ The repository's ``gemma2`` VLA implementation is the PaliGemma2 path
 必填参数:
     --model-path        ckpt 目录 (含 config.json + diffusion_pytorch_model.bin,
                         或其上一级含 model_ema/ 或 model/ 子目录)
-
-可选参数:
-    --pretrained-path   PaliGemma2 HuggingFace/tokenizer 目录. 不传时使用
-                        PALIGEMMA2_DEFAULT_PRETRAINED_PATH.
+    --pretrained-path   PaliGemma2 HuggingFace/tokenizer 目录
+    --fast-tokenizer-path
+                        FAST action tokenizer 目录
+    --norm-stats-path   训练数据对应的 norm stats JSON
 
 用法:
-    # 默认 bf16, PaliGemma2 pretrained_path 走默认
-    python inference_agilex_server_unified.py --model-path /path/to/ckpt
-
-    # 覆盖默认 pretrained_path
     python inference_agilex_server_unified.py \
-        --model-path /path/to/ckpt \
-        --pretrained-path /path/to/custom_hf_dir
+        --model-path /path/to/your/model/model_ema \
+        --pretrained-path /path/to/your/model/models--google--paligemma2-3b-pt-224 \
+        --fast-tokenizer-path /path/to/your/model/models--physical-intelligence--fast \
+        --norm-stats-path /path/to/your/norm/norm_stats.json
 
-    # fp32 推理 (对齐 fp32 训练 ckpt; 显存翻倍)
-    python inference_agilex_server_unified.py --model-path /path/to/ckpt --no-use-bf16
+    # fp32 推理可追加 --no-use-bf16；保存每步 IO 可追加：
+    # --save-dir /path/to/your/output/io_dump
 
-    # 保存每步推理 IO
-    python inference_agilex_server_unified.py --model-path /path/to/ckpt --save-dir /path/to/io_dump
-
-    # gb1_pg2_ruev_0707_coarse_emb_cycle.py 的 h01_robot_16d 完整参数
-    bash h01_client/run_h01_server_16d.sh
+    # H01 16D action / 22D state 完整参数
+    bash scripts/inference/h01/run_h01_server_s22_a16.sh
 
 要求 ckpt 旁边有 inference_config.json sidecar (老 PG2 ckpt 可能没有, 需要手写一份).
 """
@@ -51,9 +46,6 @@ from giga_models.sockets import RobotInferenceServer
 _SAVE_COUNTER = 0
 
 PALIGEMMA2_VLM_TYPE = 'paligemma2'
-PALIGEMMA2_DEFAULT_PRETRAINED_PATH = (
-    '/home/agilex-home/agilex/models/huggingface/models--google--paligemma2-3b-mix-224'
-)
 
 
 def save_inference_inputs(
@@ -537,7 +529,7 @@ def _canonicalize_inference_request(
 
 def get_policy(
     model_path: str,
-    pretrained_path: str | None,
+    pretrained_path: str,
     fast_tokenizer_path: str,
     embodiment_id: int,
     norm_stats_path: str,
@@ -550,6 +542,16 @@ def get_policy(
     is_robot_moving: bool = False,
     is_body_moving: bool = False,
 ):
+    required_paths = {
+        '--model-path': model_path,
+        '--pretrained-path': pretrained_path,
+        '--fast-tokenizer-path': fast_tokenizer_path,
+        '--norm-stats-path': norm_stats_path,
+    }
+    for flag, path in required_paths.items():
+        if not isinstance(path, str) or not path.strip():
+            raise ValueError(f'{flag} is required')
+
     from giga_models import GigaBrain07Policy
     from giga_models.pipelines.vla.giga_brain_0.giga_brain_0_utils import (
         AbsoluteActions,
@@ -598,16 +600,6 @@ def get_policy(
     _validate_vlm_type(saved_config)
     vlm_type = PALIGEMMA2_VLM_TYPE
     with_expert_attr = 'paligemma_with_expert'
-
-    # Fill in pretrained_path from the PaliGemma2 default if the user didn't pass one.
-    if pretrained_path is None:
-        pretrained_path = PALIGEMMA2_DEFAULT_PRETRAINED_PATH
-        if pretrained_path is None:
-            raise ValueError(
-                f'No --pretrained-path supplied for vlm_type={vlm_type!r}. '
-                'Pass --pretrained-path explicitly.'
-            )
-        print(f'Using default --pretrained-path for {vlm_type}: {pretrained_path}')
 
     print(f'Loading from: {ckpt_dir} (vlm_type={PALIGEMMA2_VLM_TYPE})')
 
@@ -701,8 +693,6 @@ def get_policy(
 
     # PaliGemma2 uses the PaliGemma SentencePiece tokenizer/processor.
     tokenizer_model_path = pretrained_path
-    if tokenizer_model_path is None:
-        raise ValueError('--pretrained-path is required for tokenizer loading.')
     end_effector_type = infer_end_effector_type_from_delta_mask(delta_mask)
     server_control_mode = 'end effector' if embodiment_id in (3, 4, 5) else 'joint'
 
@@ -1026,10 +1016,10 @@ def get_policy(
 
 def run_server(
     model_path: str,
-    pretrained_path: str | None = None,
-    fast_tokenizer_path: str = '/home/agilex-home/agilex/models/huggingface/models--physical-intelligence--fast',
+    pretrained_path: str = tyro.MISSING,
+    fast_tokenizer_path: str = tyro.MISSING,
     embodiment_id: int = 0,
-    norm_stats_path: str = '/home/agilex-home/agilex/wangyumeng/data/clean_desk/meta/norm_stats_wy.json',
+    norm_stats_path: str = tyro.MISSING,
     host: str = '0.0.0.0',
     port: int = 8080,
     save_dir: str | None = None,

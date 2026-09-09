@@ -7,7 +7,7 @@
 RoboTwin 的 env.get_obs() / env.take_action()。
 
 必须放在 RoboTwin 仓库根目录下运行 (import envs / generate_episode_instructions):
-    cd /path/to/RoboTwin
+    cd /path/to/your/project/RoboTwin
     python communication/robotwin_eval_client.py --config task_config/demo_clean.yml ...
 
 协议:

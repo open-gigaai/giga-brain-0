@@ -1,4 +1,4 @@
-"""GigaBrain-0.7 EBench 26-task post-training from the PaliGemma2 200k EMA."""
+"""GigaBrain-0.7 EBench 26-task post-training."""
 
 # EBench metadata uses the legacy "List" feature name.
 from pathlib import Path
@@ -6,8 +6,8 @@ from datasets import Sequence
 from datasets.features.features import _FEATURE_TYPES
 _FEATURE_TYPES.setdefault("List", Sequence)
 
-PROJECT_ROOT = "/mnt/pfs/users/wenyao.xue/code/.shared/results/gigabrain1.0/checkpoints"
-DATA_ROOT = "/mnt/pfs/users/wenyao.xue/code/.shared/data/EBench-Dataset"
+PROJECT_ROOT = "/path/to/your/project/experiments"
+DATA_ROOT = "/path/to/your/data/EBench-Dataset"
 
 
 def collect_ebench_lerobot_paths(data_root: Path) -> list[str]:
@@ -25,20 +25,15 @@ def collect_ebench_lerobot_paths(data_root: Path) -> list[str]:
 
 DATA_PATHS = collect_ebench_lerobot_paths(Path(DATA_ROOT))
 NORM_STATS_PATH = (
-    "/mnt/pfs/users/wenyao.xue/code/.shared/results/gigabrain1.0/assets/"
+    "/path/to/your/norm/"
     "ebench_generalist_14d17d_first_gripper_base_delta/norm_stats.json"
 )
-PRETRAINED_PALIGEMMA_PATH = (
-    "/shared_disk/wangyunmo/"
-    "gb1_pg2_ruev_0707_coarse_emb_cycle_proprio_anchor_new_data_200k/"
-    "model_ema/"
-    "diffusion_pytorch_model.bin"
-)
+PRETRAINED_PALIGEMMA_PATH = "/path/to/your/model/diffusion_pytorch_model.bin"
 PALIGEMMA2_TOKENIZER_PATH = (
-    "/shared_disk/models/huggingface/models--google--paligemma2-3b-pt-224"
+    "/path/to/your/model/models--google--paligemma2-3b-pt-224"
 )
 FAST_TOKENIZER_PATH = (
-    "/shared_disk/models/huggingface/models--physical-intelligence--fast"
+    "/path/to/your/model/models--physical-intelligence--fast"
 )
 
 ACTION_CHUNK = 50
@@ -175,7 +170,7 @@ config = dict(
     runners=["gigabrain07.GigaBrain07Trainer"],
     project_dir=(
         f"{PROJECT_ROOT}/"
-        "gb07_pg2_ebench_generalist_14d17d_first_gripper_base_delta_100k_from_200k"
+        "gb07_pg2_ebench_generalist_14d17d_first_gripper_base_delta_100k"
     ),
     launch=dict(
         gpu_ids=[0, 1, 2, 3, 4, 5, 6, 7],

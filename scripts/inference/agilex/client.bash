@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 REPO_ROOT=$(git -C "${SCRIPT_DIR}" rev-parse --show-toplevel)
 cd "${REPO_ROOT}"
-python projects/vla/giga-brain-0/scripts/inference/inference_agilex_client_unified_smooth.py \
+python scripts/inference/inference_agilex_client_unified_smooth.py \
   --host 127.0.0.1 \
   --port 8081 \
   --task-name "Put the cucumber into the woven basket." \

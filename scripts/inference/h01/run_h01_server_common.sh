@@ -4,7 +4,6 @@ set -euo pipefail
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 REPO_ROOT=$(git -C "${SCRIPT_DIR}" rev-parse --show-toplevel)
 CODE_ROOT=$(dirname "${REPO_ROOT}")
-PROJECT_ROOT="${REPO_ROOT}/projects/vla/giga-brain-0"
 GIGA_TRAIN_ROOT=${GIGA_TRAIN_ROOT:-"${CODE_ROOT}/giga-train"}
 GIGA_DATASETS_ROOT=${GIGA_DATASETS_ROOT:-"${CODE_ROOT}/giga-datasets"}
 
@@ -50,8 +49,8 @@ fi
 
 export CUDA_VISIBLE_DEVICES
 export GIGA_TRAIN_ROOT GIGA_DATASETS_ROOT
-export PYTHONPATH="${PROJECT_ROOT}:${REPO_ROOT}:${GIGA_TRAIN_ROOT}:${GIGA_DATASETS_ROOT}:${PYTHONPATH:-}"
-export GIGA_UNIFIED_SERVER_SCRIPT="${PROJECT_ROOT}/scripts/inference/inference_agilex_server_unified.py"
+export PYTHONPATH="${REPO_ROOT}:${GIGA_TRAIN_ROOT}:${GIGA_DATASETS_ROOT}:${PYTHONPATH:-}"
+export GIGA_UNIFIED_SERVER_SCRIPT="${REPO_ROOT}/scripts/inference/inference_agilex_server_unified.py"
 
 exec "${PYTHON_BIN}" -u \
   "${GIGA_UNIFIED_SERVER_SCRIPT}" \

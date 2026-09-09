@@ -35,7 +35,7 @@ IFS=',' read -ra CLIENT_GPUS <<< "${CLIENT_GPUS:-0,1,2,3,4,5,6,7}"
 
 if [ ! -f "${ROBOTWIN_ROOT}/envs/__init__.py" ]; then
   echo "[ERROR] ROBOTWIN_ROOT 不像 RoboTwin 仓库: ${ROBOTWIN_ROOT}" >&2
-  echo "        请 cd 到 RoboTwin 根目录运行，或设置 export ROBOTWIN_ROOT=/path/to/RoboTwin" >&2
+  echo "        请 cd 到 RoboTwin 根目录运行，或设置 export ROBOTWIN_ROOT=/path/to/your/project/RoboTwin" >&2
   exit 1
 fi
 if [ ! -f "${CLIENT_SCRIPT}" ]; then

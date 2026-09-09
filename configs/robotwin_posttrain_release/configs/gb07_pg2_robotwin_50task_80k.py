@@ -1,4 +1,4 @@
-"""GigaBrain-0.7 RoboTwin 2.0 50-task post-training from the PaliGemma2 200k EMA.
+"""GigaBrain-0.7 RoboTwin 2.0 50-task post-training.
 
 数据来自 RoboTwin 2.0 的 50 个双臂任务 (agilex_cobot_magic / aloha-agilex),
 转换成 LeRobot 格式后作为单个 dataset 根目录传入。
@@ -28,19 +28,19 @@ EMBODIMENT_ID = 0
 # ========== 用户配置区 ==========
 # RoboTwin 2.0 LeRobot 数据集根目录 (含 meta/info.json)
 # 只放 50 个任务的 demo_clean 数据，不含 demo_randomized
-DATA_ROOT = "/path/to/data/robotwin2_50task_clean_lerobot"
+DATA_ROOT = "/path/to/your/data/robotwin2_50task_clean_lerobot"
 # 训练时用 scripts/compute_norm_stats.py 生成的 norm_stats
-NORM_STATS_PATH = "/path/to/assets/robotwin2_50task_14d/giga_norm_stats.json"
-# 后训练起点：GigaBrain-0.7 PaliGemma2 proprio_anchor 200k EMA
-PRETRAINED_CKPT = "/path/to/checkpoints/gb07_pg2_proprio_anchor_200k/model_ema"
+NORM_STATS_PATH = "/path/to/your/norm/robotwin2_50task_14d/giga_norm_stats.json"
+# 后训练起点：GigaBrain-0.7 PaliGemma2 proprio_anchor checkpoint
+PRETRAINED_CKPT = "/path/to/your/model/gb07_pg2_proprio_anchor/model_ema"
 # 训练输出目录 (checkpoint 落在 <PROJECT_DIR>/models/)
-PROJECT_DIR = "/path/to/results/gb07_pg2_robotwin_50task_80k"
+PROJECT_DIR = "/path/to/your/project/experiments/gb07_pg2_robotwin_50task_80k"
 
 PALIGEMMA2_TOKENIZER_PATH = (
-    "/path/to/huggingface/models--google--paligemma2-3b-pt-224"
+    "/path/to/your/model/models--google--paligemma2-3b-pt-224"
 )
 FAST_TOKENIZER_PATH = (
-    "/path/to/huggingface/models--physical-intelligence--fast"
+    "/path/to/your/model/models--physical-intelligence--fast"
 )
 
 AGILEX_DATA_PATHS = [DATA_ROOT]
@@ -80,7 +80,7 @@ config = dict(
             transform=dict(
                 type="GigaBrain07Transform",
                 is_train=True,
-                # 200k 预训练是 proprio_anchor: state 走 proprio token 通路，
+                # 预训练 checkpoint 使用 proprio_anchor: state 走 proprio token 通路，
                 # 不进文本 prompt (与 ckpt 的 inference_config.json 一致)。
                 state_input_mode="proprio_anchor",
                 observation_memory_size=1,

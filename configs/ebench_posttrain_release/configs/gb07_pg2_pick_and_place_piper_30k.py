@@ -1,29 +1,17 @@
-"""GigaBrain-0.7 pick-and-place post-training from the PaliGemma2 200k EMA."""
+"""GigaBrain-0.7 PiPER pick-and-place post-training."""
 
 
-PROJECT_ROOT = "/gpfs/users/wangyunmo/experiments"
+PROJECT_ROOT = "/path/to/your/project/experiments"
 pick_and_place_data_paths = [
-    (
-        "/gpfs/dataset/user-private/peng.li/datasets/gigabrain1/"
-        "private_datasets/robotics/260411_pick_anything/lerobot/"
-        "merged_v2_v30/merged_v2_v30"
-    ),
+    "/path/to/your/data/pick_and_place_piper_v30",
 ]
-NORM_STATS_PATH = (
-    "/gpfs/users/wangyunmo/normstats_new2/"
-    "norm_stat_giga_robot_1_0_agilex.json"
-)
-PRETRAINED_PALIGEMMA_PATH = (
-    "/gpfs/users/wangyunmo/experiments/"
-    "gb1_pg2_ruev_0707_coarse_emb_cycle_proprio_anchor_new_data/"
-    "models/checkpoint_epoch_1_step_200000/model_ema/"
-    "diffusion_pytorch_model.bin"
-)
+NORM_STATS_PATH = "/path/to/your/norm/norm_stat_giga_robot_1_0_agilex.json"
+PRETRAINED_PALIGEMMA_PATH = "/path/to/your/model/diffusion_pytorch_model.bin"
 PALIGEMMA2_TOKENIZER_PATH = (
-    "/gpfs/users/wangyunmo/pretrain/models--google--paligemma2-3b-pt-224"
+    "/path/to/your/model/models--google--paligemma2-3b-pt-224"
 )
 FAST_TOKENIZER_PATH = (
-    "/gpfs/users/wangyunmo/pretrain/models--physical-intelligence--fast"
+    "/path/to/your/model/models--physical-intelligence--fast"
 )
 
 ACTION_CHUNK = 50
@@ -80,7 +68,7 @@ dataset_groups = [
 config = dict(
     runners=["gigabrain07.GigaBrain07Trainer"],
     project_dir=(
-        f"{PROJECT_ROOT}/gb1_pg2_pick_and_place_30k_from_200k"
+        f"{PROJECT_ROOT}/gb1_pg2_pick_and_place_30k"
     ),
     launch=dict(
         gpu_ids=[0, 1, 2, 3, 4, 5, 6, 7],

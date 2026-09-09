@@ -1,30 +1,17 @@
-"""GigaBrain-0.7 H01 push-button post-training from the PaliGemma2 200k EMA."""
+"""GigaBrain-0.7 H01 push-button post-training."""
 
 
-PROJECT_ROOT = "/gpfs/users/wangyunmo/experiments"
+PROJECT_ROOT = "/path/to/your/project/experiments"
 DATA_PATHS = [
-    "/gpfs/users/wangyunmo/release_data/"
-    "COL260814FC8-01_260815014659_8f4506_v30",
-    "/gpfs/users/wangyunmo/release_data/"
-    "COL260814FB5-01_260815050843_08e908_v30",
-    "/gpfs/users/wangyunmo/release_data/"
-    "COL2608147B2-01_260815034834_5552c7_v30",
+    "/path/to/your/data/push_button_h01_v30",
 ]
-NORM_STATS_PATH = (
-    "/gpfs/users/wangyunmo/norm_for_task/"
-    "push_buttons_h01_260815_norm_stats.json"
-)
-PRETRAINED_PALIGEMMA_PATH = (
-    "/gpfs/users/wangyunmo/experiments/"
-    "gb1_pg2_ruev_0707_coarse_emb_cycle_proprio_anchor_new_data/"
-    "models/checkpoint_epoch_1_step_200000/model_ema/"
-    "diffusion_pytorch_model.bin"
-)
+NORM_STATS_PATH = "/path/to/your/norm/norm_stat_giga_robot_1_0_agilex.json"
+PRETRAINED_PALIGEMMA_PATH = "/path/to/your/model/diffusion_pytorch_model.bin"
 PALIGEMMA2_TOKENIZER_PATH = (
-    "/gpfs/users/wangyunmo/pretrain/models--google--paligemma2-3b-pt-224"
+    "/path/to/your/model/models--google--paligemma2-3b-pt-224"
 )
 FAST_TOKENIZER_PATH = (
-    "/gpfs/users/wangyunmo/pretrain/models--physical-intelligence--fast"
+    "/path/to/your/model/models--physical-intelligence--fast"
 )
 
 ACTION_CHUNK = 50
@@ -99,7 +86,7 @@ config = dict(
     runners=["gigabrain07.GigaBrain07Trainer"],
     project_dir=(
         f"{PROJECT_ROOT}/"
-        "gb1_pg2_push_buttons_h01_260815_30k_from_200k_false_clamp"
+        "gb1_pg2_push_buttons_h01_260815_30k"
     ),
     launch=dict(
         gpu_ids=[0, 1, 2, 3, 4, 5, 6, 7],

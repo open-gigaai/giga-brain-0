@@ -135,8 +135,8 @@ statistics for `observation.state` and `action`:
 
 ```bash
 python scripts/compute_norm_stats_fast.py \
-  --data-paths /path/to/lerobot_dataset1 /path/to/lerobot_dataset2 \
-  --output-path /path/to/norm_stats.json \
+  --data-paths /path/to/your/data/lerobot_dataset1 /path/to/your/data/lerobot_dataset2 \
+  --output-path /path/to/your/norm/norm_stats.json \
   --embodiment-id 6 \
   --delta-mask \
     True True True True True True False True \
@@ -160,8 +160,8 @@ for the current GigaBrain-0.7 training stack.
 
 Training configs live under `configs`. Adjust
 `gpu_ids`, `batch_size_per_gpu`, dataset paths, and normalization paths for
-your environment. The example configs contain internal paths and must be
-edited before use outside that environment. Logs and checkpoints are written
+your environment. The example configs contain placeholder paths and must be
+updated for your environment. Logs and checkpoints are written
 below `project_dir`. For a new run, choose a new `project_dir` and set
 `train.resume=False`; keep `train.resume=True` only when deliberately resuming
 an existing run.
@@ -261,9 +261,9 @@ RoboColiseum, RoboTwin 2.0, and EBench evaluation workflows linked under
 
 ```bash
 python scripts/inference/inference_gigabrain07_flow_rollout.py \
-  --checkpoint-path /path/to/checkpoint_epoch_step \
+  --checkpoint-path /path/to/your/model/checkpoint_epoch_step \
   --config-path configs/gb07_pg2_pick_and_place_piper_30k.py \
-  --data-path /path/to/lerobot_dataset \
+  --data-path /path/to/your/data/lerobot_dataset \
   --output-path /tmp/gigabrain07_eval \
   --device cuda:0 \
   --dtype bfloat16 \
@@ -304,10 +304,10 @@ Start the GPU inference **server** from the repository root. Use
 ```bash
 CUDA_VISIBLE_DEVICES=0 python \
   scripts/inference/inference_agilex_server_unified.py \
-  --model-path /path/to/checkpoint/model_ema \
-  --pretrained-path /path/to/paligemma2-3b-pt-224 \
-  --fast-tokenizer-path /path/to/physical-intelligence-fast \
-  --norm-stats-path /path/to/norm_stats.json \
+  --model-path /path/to/your/model/checkpoint/model_ema \
+  --pretrained-path /path/to/your/model/models--google--paligemma2-3b-pt-224 \
+  --fast-tokenizer-path /path/to/your/model/models--physical-intelligence--fast \
+  --norm-stats-path /path/to/your/norm/norm_stats.json \
   --embodiment-id 6 \
   --robot-type agilex_cobot_magic \
   --original-action-dim 14 \
@@ -358,10 +358,10 @@ The H01 release profile uses a 22D observation state and a 16D action. Start
 the shared **server** launcher with the complete variant configuration:
 
 ```bash
-MODEL_PATH=/path/to/checkpoint/model_ema \
-PRETRAINED_PATH=/path/to/paligemma2-3b-pt-224 \
-FAST_TOKENIZER_PATH=/path/to/physical-intelligence-fast \
-NORM_STATS_PATH=/path/to/norm_stats.json \
+MODEL_PATH=/path/to/your/model/checkpoint/model_ema \
+PRETRAINED_PATH=/path/to/your/model/models--google--paligemma2-3b-pt-224 \
+FAST_TOKENIZER_PATH=/path/to/your/model/models--physical-intelligence--fast \
+NORM_STATS_PATH=/path/to/your/norm/norm_stats.json \
 ROBOT_TYPE=h01_robot \
 EMBODIMENT_ID=7 \
 ORIGINAL_ACTION_DIM=16 \
@@ -401,7 +401,7 @@ If the Jetson paths differ from the launcher defaults, set
 state, 16D action, three camera streams, ROS topics, and predicted values should
 live control be enabled with `EXECUTE_ACTION=--execute_action`. Enable startup
 motion separately with `INIT_POSE=--init_pose` and a validated
-`READY_POSE_NPY=/path/to/ready_pose.npy`.
+`READY_POSE_NPY=/path/to/your/data/ready_pose.npy`.
 
 ## 🧪 Benchmark
 

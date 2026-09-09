@@ -26,8 +26,8 @@ action = left_joints(6) + left_gripper(1)
 本目录只提供策略侧脚本，不包含 RoboTwin 本体。环境装好后，需要把客户端脚本拷进 RoboTwin 仓库运行（客户端要 `import` RoboTwin 的 `envs` 模块）：
 
 ```bash
-cd /path/to/RoboTwin
-cp /path/to/eval_robotwin/scripts/robotwin_eval_client.py communication/
+cd /path/to/your/project/RoboTwin
+cp /path/to/your/project/eval_robotwin/scripts/robotwin_eval_client.py communication/
 ```
 
 `communication/` 是本目录约定的存放位置，RoboTwin 仓库里没有这个目录时先 `mkdir communication`。
@@ -43,7 +43,7 @@ cp /path/to/eval_robotwin/scripts/robotwin_eval_client.py communication/
 ## 2. 计算 norm stats
 
 ## 3. 启动后训练（8 卡 FSDP2，80k steps）
-export GIGABRAIN_ROOT=/path/to/giga-brain-0
+export GIGABRAIN_ROOT=/path/to/your/project/giga-brain-0
 bash configs/robotwin_posttrain_release/scripts/train_robotwin.sh
 ```
 
@@ -70,36 +70,36 @@ config 里 `max_steps=80000`、`checkpoint_keeps` 按 1 万步取点。
 
 ```bash
 ## 终端 1：启动 GigaBrain Policy Server
-cd /path/to/eval_robotwin
+cd /path/to/your/project/eval_robotwin
 conda activate gigabrain
-export GIGABRAIN_ROOT=/path/to/giga-brain-0                 # 项目目录
-export MODEL_PATH=/path/to/checkpoint/model_ema             # 模型目录
-export NORM_STATS_PATH=/path/to/norm_stats.json             # norm_stats.json
-export PRETRAINED_PATH=/path/to/models--google--paligemma2-3b-pt-224
-export FAST_TOKENIZER_PATH=/path/to/models--physical-intelligence--fast
+export GIGABRAIN_ROOT=/path/to/your/project/giga-brain-0
+export MODEL_PATH=/path/to/your/model/checkpoint/model_ema
+export NORM_STATS_PATH=/path/to/your/norm/norm_stats.json
+export PRETRAINED_PATH=/path/to/your/model/models--google--paligemma2-3b-pt-224
+export FAST_TOKENIZER_PATH=/path/to/your/model/models--physical-intelligence--fast
 export PORT=8081
 CUDA_VISIBLE_DEVICES=0 bash scripts/run_giga_server.sh
 # 同一个 server 同时服务 demo_clean 和 demo_randomized，不需要换权重
 
 ## 终端 2：启动 RoboTwin 并行评测客户端
-cd /path/to/RoboTwin
+cd /path/to/your/project/RoboTwin
 conda activate RoboTwin
 export SERVER_HOST=127.0.0.1
 export SERVER_PORT=8081
 export CLIENT_GPUS=0,1,2,3,4,5,6,7
 export CLIENT_SCRIPT=$(pwd)/communication/robotwin_eval_client.py
 # 参数：NUM_CLIENTS TEST_NUM SAVE_VIDEO POS_LOOKAHEAD_STEP
-bash /path/to/eval_robotwin/scripts/run_robotwin_parallel.sh 24 100 0 30
+bash /path/to/your/project/eval_robotwin/scripts/run_robotwin_parallel.sh 24 100 0 30
 
 ## 查看结果
-python /path/to/eval_robotwin/scripts/parse_eval_results.py \
-  /path/to/RoboTwin/eval_result_gigabrain07_parallel/<timestamp> --accepted-totals 100
+python /path/to/your/project/eval_robotwin/scripts/parse_eval_results.py \
+  /path/to/your/project/RoboTwin/eval_result_gigabrain07_parallel/<timestamp> --accepted-totals 100
 ```
 
 单任务调试：
 
 ```bash
-cd /path/to/RoboTwin
+cd /path/to/your/project/RoboTwin
 python communication/robotwin_eval_client.py \
   --config task_config/demo_clean.yml \
   --task_name place_shoe \
